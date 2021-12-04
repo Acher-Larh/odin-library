@@ -1,0 +1,25 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.hidden {
+    display: none;
+}
+
+.card {
+    padding: 30px 30px 30px 5px;
+    width: 110px;
+    height: auto;
+    background: #cecece;
+    color: black;
+    list-style: none;
+}
+
+.book-title,
+.book-author,
+.book-isRead,
+.book-genre {
+    margin: 5px;
+}
