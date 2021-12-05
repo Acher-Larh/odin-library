@@ -1,42 +1,57 @@
 let myLibrary = [];
 
-function Book(title, author, genre, isRead) {
+function Book(title, author, genre, isRead, identifier) {
     this.title = title;
     this.author = author;
     this.genre = genre;
     this.isRead = isRead;
+    this.identifier = identifier;
+
 
 }
 
 function addBookToLibrary(title, author, genre, isRead) {
-    const newBook = new Book(title, author, genre, isRead)
-    myLibrary.push(newBook);
+    let book = new Book(title, author, genre, isRead, myLibrary.length+1)
+    myLibrary.push(book);
+    // console.log(myLibrary);
+    // myLibrary.splice(myLibrary.indexOf(book));
+    // console.log(myLibrary); 
 }
 
-addBookToLibrary("monke", 123, "loco", true);
+addBookToLibrary("1sdfh", 123, "loco", true);
+addBookToLibrary("2asfgh", 1234, "246", false);
+addBookToLibrary("3asdg", 1234, "246", false);
+addBookToLibrary("4sdfg", 1234, "246", false);
 function displayLibrary() {
     const libraryContainer = document.querySelector(".libraryDisplay");
-    // const cardContent = document.createElement("div");
-    myLibrary.forEach((book)=>{
+    document.querySelector(".libraryDisplay").querySelectorAll(".card").forEach((card) => {
+        card.parentNode.removeChild(card);
+    })
+    myLibrary.forEach((bookItem)=>{
         
         const card = document.createElement("ul");
         const titleLi = document.createElement("li");
         const authorLi = document.createElement("li");
         const genreLi = document.createElement("li");
         const isReadLi = document.createElement("li");
+        const removeBtn = document.createElement("button");
         card.appendChild(titleLi);
         card.appendChild(authorLi);
         card.appendChild(genreLi);
         card.appendChild(isReadLi);
-        titleLi.textContent = book.title;
-        authorLi.textContent = book.author;
-        genreLi.textContent = book.genre;
-        isReadLi.textContent = book.isRead;
+        card.appendChild(removeBtn);
+        titleLi.textContent = `Title: ${bookItem.title}`;
+        authorLi.textContent = `Author: ${bookItem.author}`;
+        genreLi.textContent = `Genre: ${bookItem.genre}`;
+        isReadLi.textContent = `Read?: ${bookItem.isRead}`;
+        removeBtn.textContent = `Remove`;
         card.classList.add("card");
+        card.setAttribute("id", bookItem.identifier)
         titleLi.classList.add("book-title");
         authorLi.classList.add("book-author");
         genreLi.classList.add("book-genre");
         isReadLi.classList.add("book-isRead");
+        removeBtn.setAttribute('id', 'removeBtn');
         libraryContainer.appendChild(card);
 
 
@@ -46,26 +61,44 @@ function displayLibrary() {
 const submitButton = document.getElementById("submitBook");
 submitButton.addEventListener("click", () => {
 
-    const bookTitle = document.getElementById("bookTitle").value;
-    const bookAuthor = document.getElementById("bookAuthor").value;
-    const bookGenre = document.getElementById("bookGenre").value;
-    const bookIsRead = document.getElementById("bookIsRead").value;
+    const bookTitle = document.getElementById("bookTitle");
+    const bookAuthor = document.getElementById("bookAuthor");
+    const bookGenre = document.getElementById("bookGenre");
+    const bookIsRead = document.getElementById("bookIsRead");
 
-    addBookToLibrary(bookTitle, bookAuthor, bookGenre);
+    addBookToLibrary(bookTitle.value, bookAuthor.value, bookGenre.value, bookIsRead.value);
+
+    bookTitle.value = " ";
+    bookAuthor.value = " ";
+    bookGenre.value = " ";
+    bookIsRead.value = " ";
+
+    displayLibrary();
 });
 
 const newBookBtn = document.getElementById("newBookBtn");
 newBookBtn.addEventListener("click", () => {
-    const hiddenForm = document.querySelectorAll(".hidden");
-    hiddenForm.forEach(hiddenElement => {
+    const bookForm = document.querySelector(".bookForm");
+    if(bookForm.classList.contains("hidden")){
+        bookForm.classList.remove("hidden");
+        document.getElementById("submitBook").classList.remove("hidden");
 
-        if(hiddenElement.classList.contains("hidden")){
-            hiddenElement.classList.remove("hidden");
-    
-        }else {
-            hiddenElement.classList.add("hidden");
-        }
-    });
+    }else {
+        bookForm.classList.add("hidden");
+        document.getElementById("submitBook").classList.add("hidden");
+    }
+        
+
 });
 
 displayLibrary();
+
+const removeBtn = document.querySelectorAll("#removeBtn");
+removeBtn.forEach(removeElement => { 
+    removeElement.addEventListener("click", function (e) {
+        console.log(removeElement.parentNode.id);
+        console.log(myLibrary.indexOf(Book.identifier));
+    console.log("end");
+});
+
+});
